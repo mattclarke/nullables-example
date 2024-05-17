@@ -1,6 +1,10 @@
 package com.example.nullables.infrastructure;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataFile {
     private final BufferedReaderWrapper bufferedReaderWrapper;
@@ -19,5 +23,41 @@ public class DataFile {
 
     public static DataFile createNull(String[] data) {
         return new DataFile(new StubbedBufferedReader(data));
+    }
+
+    // Nullables
+
+    private interface BufferedReaderWrapper {
+        public String[] read() throws IOException;
+    }
+
+    private static class RealBufferedReader implements BufferedReaderWrapper {
+        private final String filePath;
+        public RealBufferedReader(String filePath) {
+            this.filePath = filePath;
+        }
+
+        @Override
+        public String[] read() throws IOException {
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            List<String> lines = new ArrayList<>();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+            reader.close();
+            return lines.toArray(new String[0]);
+        }
+    }
+
+    private static class StubbedBufferedReader implements BufferedReaderWrapper {
+        private final String[] data;
+        public StubbedBufferedReader(String[] data) {
+            this.data = data;
+        }
+        @Override
+        public String[] read() {
+            return data;
+        }
     }
 }
