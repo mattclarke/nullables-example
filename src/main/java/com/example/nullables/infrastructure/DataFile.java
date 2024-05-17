@@ -32,7 +32,6 @@ public class DataFile {
     }
 
     private record RealBufferedReader(String filePath) implements BufferedReaderWrapper {
-
         @Override
             public String[] read() throws IOException {
                 BufferedReader reader = new BufferedReader(new FileReader(filePath));
