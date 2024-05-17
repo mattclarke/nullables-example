@@ -31,33 +31,25 @@ public class DataFile {
         public String[] read() throws IOException;
     }
 
-    private static class RealBufferedReader implements BufferedReaderWrapper {
-        private final String filePath;
-        public RealBufferedReader(String filePath) {
-            this.filePath = filePath;
-        }
+    private record RealBufferedReader(String filePath) implements BufferedReaderWrapper {
 
         @Override
-        public String[] read() throws IOException {
-            BufferedReader reader = new BufferedReader(new FileReader(filePath));
-            List<String> lines = new ArrayList<>();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
+            public String[] read() throws IOException {
+                BufferedReader reader = new BufferedReader(new FileReader(filePath));
+                List<String> lines = new ArrayList<>();
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+                reader.close();
+                return lines.toArray(new String[0]);
             }
-            reader.close();
-            return lines.toArray(new String[0]);
         }
-    }
 
-    private static class StubbedBufferedReader implements BufferedReaderWrapper {
-        private final String[] data;
-        public StubbedBufferedReader(String[] data) {
-            this.data = data;
-        }
+    private record StubbedBufferedReader(String[] data) implements BufferedReaderWrapper {
         @Override
-        public String[] read() {
-            return data;
+            public String[] read() {
+                return data;
+            }
         }
-    }
 }
