@@ -1,7 +1,6 @@
 package com.example.nullables.infrastructure;
 
 import java.util.List;
-import java.util.function.Function;
 
 public class Console {
     private final SystemOutWrapper systemOutWrapper;

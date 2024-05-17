@@ -37,9 +37,10 @@ public class DataFile {
             public String[] read() throws IOException {
                 BufferedReader reader = new BufferedReader(new FileReader(filePath));
                 List<String> lines = new ArrayList<>();
-                String line = null;
-                while ((line = reader.readLine()) != null) {
+                String line = reader.readLine();
+                while (line != null) {
                     lines.add(line);
+                    line = reader.readLine();
                 }
                 reader.close();
                 return lines.toArray(new String[0]);
